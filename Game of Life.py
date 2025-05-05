@@ -1,37 +1,27 @@
 import pygame
 import math
 
-# Initialisation de Pygame
 pygame.init()
-
-# Taille de la fenêtre
 window_size = (1920, 1080)
 screen = pygame.display.set_mode(window_size)
-
-# Taille des cellules
 base_cell_size = 20
 cell_size = base_cell_size
-
-# Centre de la grille
 grid_offset_x = window_size[0] // 2
 grid_offset_y = window_size[1] // 2
-
-# Facteur de zoom
 zoom_factor = 1.0
 zoom_speed = 0.1
 
-# Grille des cellules vivantes
+
 cells = set()
 
-# Variables pour le déplacement
+
 panning = False
 last_mouse_pos = None
 
 def draw_grid():
     """ Dessine la grille avec correction d'alignement """
-    screen.fill((0, 0, 0))  # Efface l'écran
-
-    # Trouver les bords de la grille visible
+    screen.fill((0, 0, 0))  
+    
     start_x = int((0 - grid_offset_x) / cell_size) - 1
     end_x = int((window_size[0] - grid_offset_x) / cell_size) + 2
     start_y = int((0 - grid_offset_y) / cell_size) - 1
@@ -46,21 +36,21 @@ def draw_grid():
         pygame.draw.line(screen, (66, 66, 66), (0, rect_y), (window_size[0], rect_y), 1)
 
 def draw_cells():
-    """ Dessine les cellules vivantes bien alignées """
+    """ Dessine les cellules vivantes """
     for (x, y) in cells:
         rect_x = round(grid_offset_x + x * cell_size)
         rect_y = round(grid_offset_y + y * cell_size)
         pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(rect_x, rect_y, cell_size - 1, cell_size - 1))
 
 def adjust_coordinates(mouse_x, mouse_y):
-    """ Convertit les coordonnées écran en coordonnées de la grille avec alignement précis """
+    """ Convertit les coordonnées écran en coordonnées de la grille """
     grid_x = math.floor((mouse_x - grid_offset_x) / cell_size)
     grid_y = math.floor((mouse_y - grid_offset_y) / cell_size)
     return grid_x, grid_y
 
 running = True
 while running:
-    screen.fill((0, 0, 0))  # Efface l'écran
+    screen.fill((0, 0, 0))
     draw_grid()
     draw_cells()
 
@@ -96,7 +86,7 @@ while running:
                 last_mouse_pos = (mouse_x, mouse_y)
 
         if event.type == pygame.MOUSEWHEEL:
-            """ Correction du zoom précis sur le curseur """
+            """ Correction du zoom sur le curseur """
             mouse_x, mouse_y = pygame.mouse.get_pos()
             before_zoom_x = (mouse_x - grid_offset_x) / cell_size
             before_zoom_y = (mouse_y - grid_offset_y) / cell_size
